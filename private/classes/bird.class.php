@@ -5,6 +5,7 @@
     // -- Start of Active Record Code -- //
     
     static protected $database;
+    static protected $db_columns = ['id', 'common_name', 'habitat', 'food', 'conservation_id', 'backyard_tips'];
 
     static public function set_database($database) {
         self::$database = $database;
@@ -102,10 +103,13 @@
     }
 
     public function create() {
-        $sql = "INSERT INTO birds (common_name, habitat, food, conservation_id, backyard_tips)";
-        $sql .= " VALUES (";
-        $sql .= ':common_name, :habitat, :food, :conservation_id, :backyard_tips';
-        $sql .= ");";
+        $attributes = $this->attributes();
+        $sql = "INSERT INTO birds (";
+        $sql .= join(', ', array_keys($attributes));
+        $sql .= ") VALUES ('";
+        $sql .= join("', '", array_values($attributes));
+//        $sql .= ':common_name, :habitat, :food, :conservation_id, :backyard_tips';
+        $sql .= "');";
 
         $stmt = self::$database->prepare($sql);
         
@@ -126,6 +130,16 @@
         
     }
 
+    // Properties which have database columns, excluding ID
+    public function attributes() {
+      $attributes = [];
+      foreach(self::$db_columns as $column) {
+        if ($column == 'id') { continue; }
+        $attributes[$column] = $this->$column;
+      }
+      return $attributes;
+    }
+   
     public function conservation() {
         // echo self::CONSERVATION_OPTIONS[$this->conservation_id];
         if( $this->conservation_id > 0 ) {
