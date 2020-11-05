@@ -62,7 +62,7 @@
     public $nest_palcement;
     public $behavior;
     public $backyard_tips;
-    protected $conservation_id=1;
+    public $conservation_id=1;
 
     public const CONSERVATION_OPTIONS = [ 
         1 => "Low concern",

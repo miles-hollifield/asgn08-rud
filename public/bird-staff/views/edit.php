@@ -30,7 +30,10 @@ if(is_post_request()) {
 } else {
 
   // display the form
-  $bird = [];
+  $bird = Bird::find_by_id($id);
+  if($bird == false) {
+    redirect_to(url_for('/bird-staff/views/index.php'));
+  }
 }
 
 ?>

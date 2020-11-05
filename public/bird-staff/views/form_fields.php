@@ -8,17 +8,17 @@ if(!isset($bird)) {
 
 <dl>
   <dt>Name</dt>
-  <dd><input type="text" name="common_name" value="" /></dd>
+  <dd><input type="text" name="common_name" value="<?php echo h($bird->common_name); ?>" /></dd>
 </dl>
 
 <dl>
   <dt>Habitat</dt>
-  <dd><input type="text" name="habitat" value="" /></dd>
+  <dd><input type="text" name="habitat" value="<?php echo h($bird->habitat); ?>" /></dd>
 </dl>
 
 <dl>
   <dt>Food</dt>
-  <dd><input type="text" name="food" value="" /></dd>
+  <dd><input type="text" name="food" value="<?php echo h($bird->food); ?>" /></dd>
 </dl>
 
 <dl>
@@ -27,7 +27,8 @@ if(!isset($bird)) {
     <select name="conservation_id">
       <option value=""></option>
     <?php foreach(Bird::CONSERVATION_OPTIONS as $con_id => $con_name) { ?>
-      <option value="<?php echo $con_id; ?>"><?php echo $con_name; ?></option>
+      <option value="<?php echo $con_id; ?>"<?php if ($bird->conservation_id == $con_id) {
+      echo 'selected'; } ?>><?php echo $con_name; ?></option>
     <?php } ?>
     </select>
   </dd>
@@ -36,5 +37,5 @@ if(!isset($bird)) {
 
 <dl>
   <dt>Backyard Tips</dt>
-  <dd><input type="text" name="backyard_tips" value="" /></dd>
+  <dd><input type="text" name="backyard_tips" value="<?php echo h($bird->backyard_tips); ?>" /></dd>
 </dl>
