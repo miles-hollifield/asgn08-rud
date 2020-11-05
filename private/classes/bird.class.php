@@ -140,6 +140,14 @@
       return $attributes;
     }
    
+    protected function sanitized_attributes() {
+      $sanitized = [];
+      foreach($this->attributes() as $key => $value) {
+        $sanitized[$key] = self::$database->escape_string($value);
+      }
+      return $sanitized;
+    }
+   
     public function conservation() {
         // echo self::CONSERVATION_OPTIONS[$this->conservation_id];
         if( $this->conservation_id > 0 ) {
