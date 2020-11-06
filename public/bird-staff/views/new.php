@@ -34,7 +34,7 @@ if(is_post_request()) {
   <div class="bicycle new">
     <h1>Create Bird</h1>
 
-    <?php // echo display_errors($errors); ?>
+    <?php echo display_errors($bird->errors); ?>
 
     <form action="<?php echo url_for('/bird-staff/views/new.php'); ?>" method="post">
 

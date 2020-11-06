@@ -43,7 +43,7 @@ if(is_post_request()) {
   <div class="bicycle edit">
     <h1>Edit Bird</h1>
 
-    <?php // echo display_errors($errors); ?>
+    <?php echo display_errors($bird->errors); ?>
 
     <form action="<?php echo url_for('/bird-staff/views/edit.php?id=' . h(u($id))); ?>" method="post">
 
