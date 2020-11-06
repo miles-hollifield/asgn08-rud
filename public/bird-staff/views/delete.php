@@ -6,11 +6,15 @@ if(!isset($_GET['id'])) {
   redirect_to(url_for('/bird-staff/views/index.php'));
 }
 $id = $_GET['id'];
+$bird = Bird::find_by_id($id);
+if($bird == false) {
+  redirect_to(url_for('/bird-staff/views/index.php'));
+}
 
 if(is_post_request()) {
 
   // Delete bicycle
-
+  $result = $bird->delete();
   $_SESSION['message'] = 'The bicycle was deleted successfully.';
   redirect_to(url_for('/bird-staff/views/index.php'));
 
@@ -30,7 +34,7 @@ if(is_post_request()) {
   <div class="bicycle delete">
     <h1>Delete Bird</h1>
     <p>Are you sure you want to delete this bird?</p>
-    <p class="item"><?php echo h('Bird Name'); ?></p>
+    <p class="item"><?php echo h($bird->common_name); ?></p>
 
     <form action="<?php echo url_for('/bird-staff/views/delete.php?id=' . h(u($id))); ?>" method="post">
       <div id="operations">
