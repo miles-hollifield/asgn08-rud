@@ -102,7 +102,7 @@
         
     }
 
-    public function create() {
+    protected function create() {
         $attributes = $this->attributes();
         $sql = "INSERT INTO birds (";
         $sql .= join(', ', array_keys($attributes));
@@ -129,7 +129,53 @@
         return $result;
         
     }
+   
+    protected function update() {
+      $attributes = $this->attributes();
+//      $attribute_pairs = [];
+//      foreach($attributes as $key => $value) {
+//        $attribute_pairs[] = "{$key}='{$value}'";
+//      }
+      $sql = "UPDATE birds SET ";
+      $sql .= "common_name = :common_name, ";
+      $sql .= "habitat = :habitat, ";
+      $sql .= "food = :food, ";
+      $sql .= "conservation_id = :conservation_id, ";
+      $sql .= "backyard_tips = :backyard_tips ";
+      $sql .= "WHERE id='" . $this->id . "' ";
+      $sql .= "LIMIT 1";
+      
+      $stmt = self::$database->prepare($sql);
+      
+      $stmt->bindValue(':common_name', $this->common_name );
+      $stmt->bindValue(':habitat', $this->habitat );
+      $stmt->bindValue(':food', $this->food );
+      $stmt->bindValue(':conservation_id', $this->conservation_id );
+      $stmt->bindValue('backyard_tips', $this->backyard_tips );
+      
+      $result = $stmt->execute();
+ 
+      return $result;
+      
+    }
+   
+    public function save() {
+      // A new record will not have an ID yet
+      if(isset($this->id)) {
+        return $this->update();
+      } else {
+        return $this->create();
+      }
+    }
 
+    public function merge_attributes($args=[]) {
+      foreach($args as $key => $value) {
+        if(property_exists($this, $key) && !is_null($value)) {
+          $this->$key = $value;
+        }
+      }
+    }
+   
     // Properties which have database columns, excluding ID
     public function attributes() {
       $attributes = [];
